@@ -36,5 +36,81 @@ namespace MoneyManager.API.Controllers.Transaction
             }
         }
         #endregion
+        #region Get All Transactions
+        /// <summary>
+        /// Get All Transactions - Home Screen
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetAllTransactions")]
+        public async Task<IActionResult> GetAllTransactions()
+        {
+            try
+            {
+                return Ok(await _transactionManager.GetAllTransaction());
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResultModel { Error = new ErrorModel { ErrorCode = "5", ErrorMessage = "Internal Server Error" } });
+            }
+        }
+        #endregion
+        #region Add Transaction
+        /// <summary>
+        /// Add Transactions - Home Screen
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("AddTransaction")]
+        public async Task<IActionResult> AddTransaction()
+        {
+            try
+            {
+                return Ok(await _transactionManager.AddTransaction());
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResultModel { Error = new ErrorModel { ErrorCode = "5", ErrorMessage = "Internal Server Error" } });
+            }
+        }
+        #endregion
+        #region Update Transaction
+        /// <summary>
+        /// Update Transactions - Home Screen
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("UpdateTransaction")]
+        public async Task<IActionResult> UpdateTransaction()
+        {
+            try
+            {
+                return Ok(await _transactionManager.UpdateTransaction());
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResultModel { Error = new ErrorModel { ErrorCode = "5", ErrorMessage = "Internal Server Error" } });
+            }
+        }
+        #endregion
+        #region Delete Transactions
+        /// <summary>
+        /// Delete Transactions - Home Screen
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("DeleteTransaction")]
+        public async Task<IActionResult> DeleteTransaction()
+        {
+            try
+            {
+                return Ok(await _transactionManager.DeleteTransaction());
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResultModel { Error = new ErrorModel { ErrorCode = "5", ErrorMessage = "Internal Server Error" } });
+            }
+        }
+        #endregion
     }
 }

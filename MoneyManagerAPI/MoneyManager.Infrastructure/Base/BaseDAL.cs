@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System.Xml.Linq;
 
 namespace MoneyManager.Infrastructure.Base
 {
@@ -16,18 +17,16 @@ namespace MoneyManager.Infrastructure.Base
         #endregion
 
         #region Get Connection
-        public string GetConnectionString(string connection = "UserSaiyan")
+        public string GetAzureBlobStorageConnectionString(string connection = "UserBlobStorage")
         {
-            string connectionString = string.Empty;
+            string azureBlobStorageString = string.Empty;
 
             try
             {
-                if (_environment.EnvironmentName.Equals("Development"))
-                    connectionString = _configuration.GetSection("ConnectionStringDevelopment").GetValue(typeof(String), connection).ToString()!;
-                else
-                    connectionString = Environment.GetEnvironmentVariable("FarmFitAPIDb", EnvironmentVariableTarget.Machine)!;
+                azureBlobStorageString = "";
+                    /* _configuration.GetSection("ConnectionBlobDevelopment").GetValue(typeof(string), "UserBlobStorage").ToString()!;*/
 
-                return connectionString;
+                return azureBlobStorageString;
             }
             catch (Exception)
             {

@@ -1,9 +1,8 @@
-﻿using Dapper;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.WindowsAzure.Storage.Table;
 using MoneyManager.Core.Models.Transaction;
 using MoneyManager.Core.Providers.Transaction;
 using MoneyManager.Infrastructure.Base;
-using System.Text;
+using Microsoft.WindowsAzure.Storage;
 
 namespace MoneyManager.Infrastructure.Transaction
 {
@@ -13,6 +12,38 @@ namespace MoneyManager.Infrastructure.Transaction
         {
         }
 
+        public Task<TransactionBaselineModel> AddTransaction()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TransactionBaselineModel> DeleteTransaction()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<TransactionBaselineModel>> GetAllTransaction()
+        {
+            try
+            {
+                var storageAccount = CloudStorageAccount.Parse(GetAzureBlobStorageConnectionString());
+                var tableClient = storageAccount.CreateCloudTableClient();
+                var table = tableClient.GetTableReference("Transactions");
+                await table.CreateIfNotExistsAsync();
+
+                string partitionKey = "transactions";
+                var query = new TableQuery<TransactionBaselineModel>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
+
+                var transactions = await table.ExecuteQuerySegmentedAsync(query, null);
+                return transactions;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
         /// <summary>
         /// GetMonthTransaction - Return the Transaction List filtered by actual month
         /// App =>  - method => 
@@ -20,19 +51,39 @@ namespace MoneyManager.Infrastructure.Transaction
         /// <returns></returns>
         public async Task<IEnumerable<TransactionBaselineModel>> GetMonthTransaction()
         {
-            StringBuilder sqlBuilder = new StringBuilder();
-
-            // Construir a consulta SQL
-            sqlBuilder.AppendLine("SELECT id, title, description, value, date, category FROM Transactions");
-            sqlBuilder.AppendLine("WHERE MONTH(date) = MONTH(CURRENT_TIMESTAMP)");
-
-            string sql = sqlBuilder.ToString();
-
-            // Executar a consulta SQL
-            using (var connection = new SqlConnection(GetConnectionString()))
+            var transaction = new TransactionBaselineModel
             {
-                return await connection.QueryAsync<TransactionBaselineModel>(sql);
+                Title = "teste",
+                Description = "teste",
+                Value = 22.3,
+                Date = DateTime.Now,
+                Category = "Moradia"
+            };
+
+            try
+            {
+                var storageAccount = CloudStorageAccount.Parse(GetAzureBlobStorageConnectionString());
+                var tableClient = storageAccount.CreateCloudTableClient();
+                var table = tableClient.GetTableReference("Transactions");
+                await table.CreateIfNotExistsAsync();
+
+                string partitionKey = "transactions";
+                var query = new TableQuery<TransactionBaselineModel>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey));
+
+                var transactions = await table.ExecuteQuerySegmentedAsync(query, null);
+                return transactions;
             }
+            catch (Exception )
+            {
+                throw;
+            }
+           
+        }
+
+        public Task<TransactionBaselineModel> UpdateTransaction()
+        {
+            throw new NotImplementedException();
         }
     }
 }
+
