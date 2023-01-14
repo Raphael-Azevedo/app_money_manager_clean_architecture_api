@@ -1,5 +1,8 @@
 ﻿using MoneyManager.Core.Models.Result;
+using MoneyManager.Core.Models.Transaction;
 using MoneyManager.Core.Providers.Transaction;
+using System.Data.Common;
+using System.Transactions;
 
 namespace MoneyManager.Core.Managers.Transaction
 {
@@ -15,11 +18,11 @@ namespace MoneyManager.Core.Managers.Transaction
             _transactionDAL = transactionDAL;
         }
         #endregion
-        public async Task<ResultModel> AddTransaction()
+        public async Task<ResultModel> AddTransaction(TransactionBaselineModel transaction)
         {
             try
             {
-                var result = await _transactionDAL.AddTransaction();
+                var result = await _transactionDAL.AddTransaction(transaction);
 
                 return new ResultModel { Error = null, Success = true, ResultData = result };
 
@@ -30,11 +33,11 @@ namespace MoneyManager.Core.Managers.Transaction
             }
         }
 
-        public async Task<ResultModel> DeleteTransaction()
+        public async Task<ResultModel> DeleteTransaction(TransactionBaselineModel transaction)
         {
             try
             {
-                var result = await _transactionDAL.DeleteTransaction();
+                var result = await _transactionDAL.DeleteTransaction(transaction);
 
                 return new ResultModel { Error = null, Success = true, ResultData = result };
 
@@ -75,11 +78,11 @@ namespace MoneyManager.Core.Managers.Transaction
             }
         }
         #endregion
-        public async Task<ResultModel> UpdateTransaction()
+        public async Task<ResultModel> UpdateTransaction(TransactionBaselineModel transaction)
         {
             try
             {
-                var result = await _transactionDAL.UpdateTransaction();
+                var result = await _transactionDAL.UpdateTransaction(transaction);
 
                 return new ResultModel { Error = null, Success = true, ResultData = result };
 

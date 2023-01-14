@@ -1,4 +1,5 @@
 ﻿using MoneyManager.Core.Models.Result;
+using MoneyManager.Core.Models.Transaction;
 
 namespace MoneyManager.Core.Managers.Transaction
 {
@@ -23,21 +24,21 @@ namespace MoneyManager.Core.Managers.Transaction
         /// Add Transaction - Home Screen
         /// </summary>
         /// <returns></returns>
-        Task<ResultModel> AddTransaction();
+        Task<ResultModel> AddTransaction(TransactionBaselineModel transaction);
         #endregion
         #region Update Transaction
         /// <summary>
         /// Update Transaction - Home Screen
         /// </summary>
         /// <returns></returns>
-        Task<ResultModel> UpdateTransaction();
+        Task<ResultModel> UpdateTransaction(TransactionBaselineModel transaction);
         #endregion
         #region Delete Transactions
         /// <summary>
         /// Delete Transactions - Home Screen
         /// </summary>
         /// <returns></returns>
-        Task<ResultModel> DeleteTransaction();
+        Task<ResultModel> DeleteTransaction(TransactionBaselineModel transaction);
         #endregion
     }
 }

@@ -12,14 +12,48 @@ namespace MoneyManager.Infrastructure.Transaction
         {
         }
 
-        public Task<TransactionBaselineModel> AddTransaction()
+        public async Task<TransactionBaselineModel> AddTransaction(TransactionBaselineModel transaction)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var storageAccount = CloudStorageAccount.Parse(GetAzureBlobStorageConnectionString());
+                var tableClient = storageAccount.CreateCloudTableClient();
+                var table = tableClient.GetTableReference("Transactions");
+                await table.CreateIfNotExistsAsync();
+
+                string partitionKey = "transactions";
+                transaction.PartitionKey = partitionKey;
+
+                var transactionsOperation = TableOperation.Insert(transaction);
+                await table.ExecuteAsync(transactionsOperation);
+                return transaction;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public Task<TransactionBaselineModel> DeleteTransaction()
+        public async Task<TransactionBaselineModel> DeleteTransaction(TransactionBaselineModel transaction)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var storageAccount = CloudStorageAccount.Parse(GetAzureBlobStorageConnectionString());
+                var tableClient = storageAccount.CreateCloudTableClient();
+                var table = tableClient.GetTableReference("Transactions");
+                await table.CreateIfNotExistsAsync();
+
+                string partitionKey = "transactions";
+                transaction.PartitionKey = partitionKey;
+
+                var transactionsOperation = TableOperation.Delete(transaction);
+                await table.ExecuteAsync(transactionsOperation);
+                return transaction;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<IEnumerable<TransactionBaselineModel>> GetAllTransaction()
@@ -51,15 +85,6 @@ namespace MoneyManager.Infrastructure.Transaction
         /// <returns></returns>
         public async Task<IEnumerable<TransactionBaselineModel>> GetMonthTransaction()
         {
-            var transaction = new TransactionBaselineModel
-            {
-                Title = "teste",
-                Description = "teste",
-                Value = 22.3,
-                Date = DateTime.Now,
-                Category = "Moradia"
-            };
-
             try
             {
                 var storageAccount = CloudStorageAccount.Parse(GetAzureBlobStorageConnectionString());
@@ -80,9 +105,26 @@ namespace MoneyManager.Infrastructure.Transaction
            
         }
 
-        public Task<TransactionBaselineModel> UpdateTransaction()
+        public async Task<TransactionBaselineModel> UpdateTransaction(TransactionBaselineModel transaction)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var storageAccount = CloudStorageAccount.Parse(GetAzureBlobStorageConnectionString());
+                var tableClient = storageAccount.CreateCloudTableClient();
+                var table = tableClient.GetTableReference("Transactions");
+                await table.CreateIfNotExistsAsync();
+
+                string partitionKey = "transactions";
+                transaction.PartitionKey = partitionKey;
+
+                var transactionsOperation = TableOperation.Replace(transaction);
+                await table.ExecuteAsync(transactionsOperation);
+                return transaction;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

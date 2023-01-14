@@ -10,8 +10,8 @@ namespace MoneyManager.Core.Providers.Transaction
         /// <returns></returns>
         Task<IEnumerable<TransactionBaselineModel>> GetMonthTransaction();
         Task<IEnumerable<TransactionBaselineModel>> GetAllTransaction();
-        Task<TransactionBaselineModel> AddTransaction();
-        Task<TransactionBaselineModel> UpdateTransaction();
-        Task<TransactionBaselineModel> DeleteTransaction();
+        Task<TransactionBaselineModel> AddTransaction(TransactionBaselineModel transaction);
+        Task<TransactionBaselineModel> UpdateTransaction(TransactionBaselineModel transaction);
+        Task<TransactionBaselineModel> DeleteTransaction(TransactionBaselineModel transaction);
     }
 }

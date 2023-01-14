@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MoneyManager.Core.Managers.Transaction;
 using MoneyManager.Core.Models.Result;
 using MoneyManager.Core.Models.System;
+using MoneyManager.Core.Models.Transaction;
 
 namespace MoneyManager.API.Controllers.Transaction
 {
@@ -62,11 +63,11 @@ namespace MoneyManager.API.Controllers.Transaction
         /// <returns></returns>
         [HttpPost]
         [Route("AddTransaction")]
-        public async Task<IActionResult> AddTransaction()
+        public async Task<IActionResult> AddTransaction(TransactionBaselineModel transaction)
         {
             try
             {
-                return Ok(await _transactionManager.AddTransaction());
+                return Ok(await _transactionManager.AddTransaction(transaction));
             }
             catch (Exception)
             {
@@ -79,13 +80,13 @@ namespace MoneyManager.API.Controllers.Transaction
         /// Update Transactions - Home Screen
         /// </summary>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPost]
         [Route("UpdateTransaction")]
-        public async Task<IActionResult> UpdateTransaction()
+        public async Task<IActionResult> UpdateTransaction(TransactionBaselineModel transaction)
         {
             try
             {
-                return Ok(await _transactionManager.UpdateTransaction());
+                return Ok(await _transactionManager.UpdateTransaction(transaction));
             }
             catch (Exception)
             {
@@ -98,13 +99,13 @@ namespace MoneyManager.API.Controllers.Transaction
         /// Delete Transactions - Home Screen
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         [Route("DeleteTransaction")]
-        public async Task<IActionResult> DeleteTransaction()
+        public async Task<IActionResult> DeleteTransaction(TransactionBaselineModel transaction)
         {
             try
             {
-                return Ok(await _transactionManager.DeleteTransaction());
+                return Ok(await _transactionManager.DeleteTransaction(transaction));
             }
             catch (Exception)
             {
